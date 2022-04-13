@@ -4,12 +4,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ToogleColorMode } from './components/ToogleColorMode/ToogleColorMode';
 import { fetchData, IDataType } from './api';
 import { CountryPicker } from './components/CountryPicker/CountryPicker';
+import { TabComponent } from './components/TabComponent/TabComponent';
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
   const [data, setData] = useState<IDataType[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<IDataType | null>(null);
 
   // theme
   useLayoutEffect(() => {
@@ -38,11 +40,18 @@ const App = () => {
     setLoading(true);
     const fetchedData = await fetchData();
     setData(fetchedData);
+    const globalData = fetchedData.find((f) => f.location === 'International');
+    if (globalData) {
+      setSelectedCountry(globalData);
+    }
     setLoading(false);
   };
 
   const handleCountryChange = (val: string) => {
-    // console.log(val);
+    const selectedCountry = data.find((f) => f.location === val);
+    if (selectedCountry) {
+      setSelectedCountry(selectedCountry);
+    }
   };
 
   return (
@@ -70,6 +79,7 @@ const App = () => {
             >
               <CountryPicker handleCountryChange={handleCountryChange} data={data} />
             </Box>
+            {selectedCountry && <TabComponent selectedCountry={selectedCountry} allData={data} />}
           </>
         ) : (
           <Box
