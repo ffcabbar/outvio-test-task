@@ -1,10 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Box, CircularProgress, Container, CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ToogleColorMode } from './components/ToogleColorMode/ToogleColorMode';
+import { CountryPicker, TabComponent, ToogleColorMode } from './components/index';
 import { fetchData, IDataType } from './api';
-import { CountryPicker } from './components/CountryPicker/CountryPicker';
-import { TabComponent } from './components/TabComponent/TabComponent';
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -57,7 +55,11 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container>
+      <Container
+        sx={{
+          marginTop: '8rem'
+        }}
+      >
         {!isLoading ? (
           <>
             <Box
@@ -82,19 +84,31 @@ const App = () => {
             {selectedCountry && <TabComponent selectedCountry={selectedCountry} allData={data} />}
           </>
         ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: '30px'
-            }}
-          >
-            <h1>Loading...</h1>
-            <div>
-              <CircularProgress />
-            </div>
-          </Box>
+          <>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '30px'
+              }}
+            >
+              <h1>Loading...</h1>
+              <div>
+                <CircularProgress />
+              </div>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '30px'
+              }}
+            >
+              <h5>It might take longer than usual. Data is quite big.</h5>
+            </Box>
+          </>
         )}
       </Container>
     </ThemeProvider>
