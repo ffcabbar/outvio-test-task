@@ -4,5 +4,6 @@
     "no-unused-vars": "warn",
     "no-var": "error",
     "no-console": "warn"
-  }
+  },
+  "ignorePatterns": ["src/**/*.d.ts", "node_modules/"]
 }
