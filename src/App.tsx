@@ -2,11 +2,14 @@ import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Box, CircularProgress, Container, CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ToogleColorMode } from './components/ToogleColorMode/ToogleColorMode';
-import { fetchData } from './api';
+import { fetchData, IDataType } from './api';
+import { CountryPicker } from './components/CountryPicker/CountryPicker';
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isLoading, setLoading] = useState(false);
+
+  const [data, setData] = useState<IDataType[]>([]);
 
   // theme
   useLayoutEffect(() => {
@@ -26,6 +29,7 @@ const App = () => {
     [isDarkTheme]
   );
 
+  // fetch data
   useEffect(() => {
     getData();
   }, []);
@@ -33,7 +37,12 @@ const App = () => {
   const getData = async () => {
     setLoading(true);
     const fetchedData = await fetchData();
+    setData(fetchedData);
     setLoading(false);
+  };
+
+  const handleCountryChange = (val: string) => {
+    // console.log(val);
   };
 
   return (
@@ -51,6 +60,15 @@ const App = () => {
               }}
             >
               <ToogleColorMode isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                m: 1,
+                p: 1
+              }}
+            >
+              <CountryPicker handleCountryChange={handleCountryChange} data={data} />
             </Box>
           </>
         ) : (
