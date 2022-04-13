@@ -4,6 +4,8 @@
 
 ### [🚀 See the app in action 🚀](https://outvio-test-task.netlify.app/)
 
+![gif](https://user-images.githubusercontent.com/34713212/163230144-cf8ed410-55cf-47a6-8575-4c2353d1c956.gif)
+
 ## Develop
 
 > You'll need [Node](https://nodejs.org/en/)
