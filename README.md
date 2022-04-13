@@ -9,7 +9,7 @@
 > You'll need [Node](https://nodejs.org/en/)
 
 - run `yarn` or `npm i` to install dependencies
-- run `yarn run start`or `npm run start` to start development environment
+- run `yarn run start `or `npm run start` to start development environment
 
 ## Build
 
