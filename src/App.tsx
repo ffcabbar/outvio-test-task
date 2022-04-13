@@ -1,17 +1,18 @@
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import { Box, CircularProgress, Container, CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CountryPicker, TabComponent, ToogleColorMode } from './components/index';
-import { fetchData, IDataType } from './api';
+import { IDataType } from './common/types';
+import { useFetch } from './hooks/useFetch';
 
 const App = () => {
+  const { data, loading, defaultCountry } = useFetch(
+    'https://covid.ourworldindata.org/data/owid-covid-data.json'
+  );
+
   const [isDarkTheme, setIsDarkTheme] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<IDataType | null>(defaultCountry);
 
-  const [data, setData] = useState<IDataType[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<IDataType | null>(null);
-
-  // theme
   useLayoutEffect(() => {
     if (localStorage) {
       const isDarkTheme = localStorage.getItem('darkTheme');
@@ -29,22 +30,6 @@ const App = () => {
     [isDarkTheme]
   );
 
-  // fetch data
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    setLoading(true);
-    const fetchedData = await fetchData();
-    setData(fetchedData);
-    const globalData = fetchedData.find((f) => f.location === 'International');
-    if (globalData) {
-      setSelectedCountry(globalData);
-    }
-    setLoading(false);
-  };
-
   const handleCountryChange = (val: string) => {
     const selectedCountry = data.find((f) => f.location === val);
     if (selectedCountry) {
@@ -60,30 +45,7 @@ const App = () => {
           marginTop: '8rem'
         }}
       >
-        {!isLoading ? (
-          <>
-            <Box
-              sx={{
-                display: 'flex',
-                m: 1,
-                p: 1,
-                justifyContent: 'flex-end'
-              }}
-            >
-              <ToogleColorMode isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                m: 1,
-                p: 1
-              }}
-            >
-              <CountryPicker handleCountryChange={handleCountryChange} data={data} />
-            </Box>
-            {selectedCountry && <TabComponent selectedCountry={selectedCountry} allData={data} />}
-          </>
-        ) : (
+        {loading && (
           <>
             <Box
               sx={{
@@ -108,6 +70,35 @@ const App = () => {
             >
               <h5>It might take longer than usual. Data is quite big.</h5>
             </Box>
+          </>
+        )}
+
+        {!loading && data && defaultCountry && (
+          <>
+            <Box
+              sx={{
+                display: 'flex',
+                m: 1,
+                p: 1,
+                justifyContent: 'flex-end'
+              }}
+            >
+              <ToogleColorMode isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                m: 1,
+                p: 1
+              }}
+            >
+              <CountryPicker
+                handleCountryChange={handleCountryChange}
+                data={data}
+                defaultCountry={defaultCountry}
+              />
+            </Box>
+            {selectedCountry && <TabComponent selectedCountry={selectedCountry} allData={data} />}
           </>
         )}
       </Container>

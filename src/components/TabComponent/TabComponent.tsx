@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
-import { IDataType } from '../../api';
+import { IDataType } from '../../common/types';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 

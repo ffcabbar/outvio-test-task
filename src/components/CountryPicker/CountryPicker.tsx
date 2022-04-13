@@ -1,15 +1,16 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { IDataType } from '../../api';
+import { IDataType } from '../../common/types';
 
 type Props = {
   handleCountryChange: (value: string) => void;
   data: IDataType[];
+  defaultCountry: IDataType;
 };
 
-export const CountryPicker = ({ handleCountryChange, data }: Props) => {
+export const CountryPicker = ({ handleCountryChange, data, defaultCountry }: Props) => {
   return (
     <Autocomplete
-      defaultValue={data.find((f) => f.location === 'International')}
+      defaultValue={defaultCountry}
       options={data}
       sx={{ width: '100%' }}
       disableClearable
