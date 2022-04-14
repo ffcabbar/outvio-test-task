@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Box, CircularProgress, Container } from '@mui/material';
-import { CountryPicker, TabComponent, ToogleColorMode } from './components/index';
+import { Box, Container } from '@mui/material';
+import { CountryPicker, TabComponent, ToogleColorMode, Loader } from './components/index';
 import { IDataType } from './common/types';
 import { useFetch } from './hooks/useFetch';
 
@@ -25,33 +25,7 @@ const App = () => {
           marginTop: '8rem'
         }}
       >
-        {loading && (
-          <>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '30px'
-              }}
-            >
-              <h1>Loading...</h1>
-              <div>
-                <CircularProgress />
-              </div>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '30px'
-              }}
-            >
-              <h5>It might take longer than usual. Data is quite big.</h5>
-            </Box>
-          </>
-        )}
+        {loading && <Loader />}
 
         {!loading && data && defaultCountry && (
           <>
