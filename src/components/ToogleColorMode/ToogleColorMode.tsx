@@ -1,20 +1,23 @@
-import { IconButton } from "@mui/material";
-import { Brightness4, Brightness7 } from "@mui/icons-material";
+import { IconButton, useTheme } from '@mui/material';
+import { Brightness4, Brightness7 } from '@mui/icons-material';
+import { useContext } from 'react';
+import { ColorModeContext } from '../../context/ThemeContext';
 
-type Props = {
-  isDarkTheme: boolean;
-  setIsDarkTheme: React.Dispatch<React.SetStateAction<boolean>>;
-};
+export const ToogleColorMode = () => {
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
 
-export const ToogleColorMode = ({ isDarkTheme, setIsDarkTheme }: Props) => {
-  const handleToogleMode = () => {
-    localStorage.setItem("darkTheme", (!isDarkTheme).toString());
-    setIsDarkTheme(!isDarkTheme);
+  const handleLocalStorage = (val: string) => {
+    localStorage.setItem('appTheme', val);
   };
 
   return (
-    <IconButton onClick={handleToogleMode} color="inherit">
-      {isDarkTheme ? <Brightness7 /> : <Brightness4 />}
+    <IconButton onClick={colorMode.toggleColorMode} color="inherit">
+      {theme.palette.mode === 'dark' ? (
+        <Brightness7 onClick={() => handleLocalStorage('light')} />
+      ) : (
+        <Brightness4 onClick={() => handleLocalStorage('dark')} />
+      )}
     </IconButton>
   );
 };

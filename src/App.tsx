@@ -1,6 +1,5 @@
-import { useLayoutEffect, useMemo, useState } from 'react';
-import { Box, CircularProgress, Container, CssBaseline } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import { Box, CircularProgress, Container } from '@mui/material';
 import { CountryPicker, TabComponent, ToogleColorMode } from './components/index';
 import { IDataType } from './common/types';
 import { useFetch } from './hooks/useFetch';
@@ -10,25 +9,7 @@ const App = () => {
     'https://covid.ourworldindata.org/data/owid-covid-data.json'
   );
 
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<IDataType | null>(defaultCountry);
-
-  useLayoutEffect(() => {
-    if (localStorage) {
-      const isDarkTheme = localStorage.getItem('darkTheme');
-      setIsDarkTheme(isDarkTheme === 'true' ? true : false);
-    }
-  }, []);
-
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: isDarkTheme ? 'dark' : 'light'
-        }
-      }),
-    [isDarkTheme]
-  );
 
   const handleCountryChange = (val: string) => {
     const selectedCountry = data.find((f) => f.location === val);
@@ -38,8 +19,7 @@ const App = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <>
       <Container
         sx={{
           marginTop: '8rem'
@@ -83,7 +63,7 @@ const App = () => {
                 justifyContent: 'flex-end'
               }}
             >
-              <ToogleColorMode isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+              <ToogleColorMode />
             </Box>
             <Box
               sx={{
@@ -102,7 +82,7 @@ const App = () => {
           </>
         )}
       </Container>
-    </ThemeProvider>
+    </>
   );
 };
 
